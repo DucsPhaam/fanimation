@@ -1,9 +1,8 @@
 <?php 
     require '../includes/db_connect.php';
     include '../includes/header.php';
-
 ?>
-
+<link rel="stylesheet" href="../assets/css/index.css">
 <div id="carouselExampleFade" class="carousel slide carousel-fade" data-bs-ride="carousel">
         <div class="carousel-inner">
             <div class="carousel-item active">
@@ -40,7 +39,13 @@
             <span class="visually-hidden">Next</span>
         </button>
     </div>
+    <div class="plx-image1">
 
+    </div>
+    <div class="content-1">
+
+    </div>
+    <div class="plx-image2"></div>
 <?php 
     include '../includes/footer.php'
 ?>

@@ -39,13 +39,24 @@
             <span class="visually-hidden">Next</span>
         </button>
     </div>
-    <div class="plx-image1">
-
-    </div>
     <div class="content-1">
+        <p>Fanimation fans are the perfect fusion of beauty and functionality. With designs for every style and technology-driven controls for your convenience, Fanimation fans inspire your home. They integrate into any space and allow you to make a statement that is all your own.</p>
 
     </div>
-    <div class="plx-image2"></div>
+    <div class="plx-image1">
+        <video src="../assets/images/banners/March25_CCT_Select_v06.mp4" autoplay loop muted></video>
+    </div>
+    <div class="content-2">
+        <a href=""><img src="../assets/images/banners/banner-fanimation-studio1_hover.jpg" alt=""></a>
+        <a href=""><img src="../assets/images/banners/showroomcollection2018_hover.jpg" alt=""></a>
+    </div>
+    <div class="plx-image2">
+        <div class="box-content">
+            <h4>ABOUT US</h4>
+            <h2>Air Apparent</h2>
+            <p>From the very first fan we created more than 30 years ago to the newest ones in our portfolio, we create fans you can’t wait to show off! The same ingenuity and quality craftsmanship that gave birth to Fanimation continues to guide us today.</p>
+        </div>
+    </div>
 <?php 
     include '../includes/footer.php'
 ?>

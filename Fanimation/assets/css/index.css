@@ -1,0 +1,21 @@
+.plx-image1 {
+  background-image: url(../images/banners/kwartet_video_hero.jpg);
+  text-align: center;
+  width: 100%;
+  height: 900px; /*fix sau*/
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.plx-image2{
+     background-image: url(../images/banners/air-apparent-banner-bkgr-2.jpg);
+     text-align: center;
+     width: 100%;
+     height: 900px; /*fix sau*/
+     background-attachment: fixed;
+     background-position: center;
+     background-repeat: no-repeat;
+     background-size: cover;
+}

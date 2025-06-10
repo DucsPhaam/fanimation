@@ -41,13 +41,24 @@ $search = isset($_GET['search']) ? htmlspecialchars($_GET['search']) : '';
                 <ul class="navbar-nav mx-auto"> <!-- Thêm mx-auto để căn giữa -->
                     <li class="nav-item active fs-4"> <a class="nav-link" href="<?php echo $index_url; ?>">Home</a> </li>
                     <li class="nav-item fs-4"><a class="nav-link" href="#">About</a></li>
-                    <li class="nav-item fs-4"><a class="nav-link" href="#">Services</a></li>
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle fs-4" href="#" data-bs-toggle="dropdown">Products</a>
+                        <!-- Liên kết chính đến help_center.php -->
+                        <a class="nav-link fs-4" href="help_center.php">Help Center</a>
+                        <!-- Nút để mở dropdown -->
+                        <a class="nav-link dropdown-toggle fs-4 d-inline-block" href="#" data-bs-toggle="dropdown" aria-expanded="false"></a>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#">Submenu item 1</a></li>
-                            <li><a class="dropdown-item" href="#">Submenu item 2</a></li>
-                            <li><a class="dropdown-item" href="#">Submenu item 3</a></li>
+                            <li><a class="dropdown-item" href="help_center.php#contact-tech">Contact Tech Support</a></li>
+                            <li><a class="dropdown-item" href="help_center.php#about-us">About Us</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle fs-4" href="products.php" data-bs-toggle="dropdown">Products</a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="products.php?category=1">Ceiling fans</a></li>
+                            <li><a class="dropdown-item" href="products.php?category=2">Pedestal fans</a></li>
+                            <li><a class="dropdown-item" href="products.php?category=3">Wall fans</a></li>
+                            <li><a class="dropdown-item" href="products.php?category=4">Exhaust fans</a></li>
+                            <li><a class="dropdown-item" href="products.php?category=5">Accessories</a></li>
                         </ul>
                     </li>
                     <li class="nav-item fs-4"><a class="nav-link" href="<?php echo $admin_index_url ?>">Dashboard</a></li> <!-- Dành cho quản trị -->
@@ -59,7 +70,16 @@ $search = isset($_GET['search']) ? htmlspecialchars($_GET['search']) : '';
                 <ul class="navbar-nav mx-auto"> <!-- Thêm mx-auto để căn giữa -->
                     <li class="nav-item active fs-4"> <a class="nav-link" href="<?php echo $index_url; ?>">Home</a> </li>
                     <li class="nav-item fs-4"><a class="nav-link" href="#">About</a></li>
-                    <li class="nav-item fs-4"><a class="nav-link" href="#">Services</a></li>
+                    <li class="nav-item dropdown">
+                        <!-- Liên kết chính đến help_center.php -->
+                        <a class="nav-link fs-4" href="help_center.php">Help Center</a>
+                        <!-- Nút để mở dropdown -->
+                        <a class="nav-link dropdown-toggle fs-4 d-inline-block" href="#" data-bs-toggle="dropdown" aria-expanded="false"></a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="help_center.php#contact-tech">Contact Tech Support</a></li>
+                            <li><a class="dropdown-item" href="help_center.php#about-us">About Us</a></li>
+                        </ul>
+                    </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle fs-4" href="#" data-bs-toggle="dropdown">Products</a>
                         <ul class="dropdown-menu">

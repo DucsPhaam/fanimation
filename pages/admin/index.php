@@ -2,7 +2,6 @@
 include $_SERVER['DOCUMENT_ROOT'] . '/Fanimation/includes/config.php';
 require_once $db_connect_url;
 include $admin_header_url;
-include $function_url;
 
 $monthly_sales = getMonthlySales();
 $annual_sales = getAnnualSales();

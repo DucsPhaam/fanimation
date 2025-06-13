@@ -671,4 +671,174 @@ if (!function_exists('getAllUsers')) {
         ];
     }
 }
+
+
+// Get distinct categories for filter dropdown
+function getCategories($conn)
+{
+    if (!$conn->ping()) {
+        error_log("Kết nối cơ sở dữ liệu đã bị đóng trong getCategories.");
+        return [];
+    }
+
+    $categories = [];
+    $sql = "SELECT DISTINCT name AS category FROM categories ORDER BY name";
+    $result = $conn->query($sql);
+    if ($result === false) {
+        error_log("Lỗi truy vấn getCategories: " . $conn->error);
+        return [];
+    }
+    while ($row = $result->fetch_assoc()) {
+        $categories[] = $row['category'];
+    }
+    $result->free();
+    return $categories;
+}
+
+// Get distinct colors for filter dropdown
+function getColors($conn)
+{
+    if (!$conn->ping()) {
+        error_log("Kết nối cơ sở dữ liệu đã bị đóng trong getColors.");
+        return [];
+    }
+
+    $colors = [];
+    $sql = "SELECT DISTINCT id, hex_code AS color FROM colors ORDER BY hex_code";
+    $result = $conn->query($sql);
+    if ($result === false) {
+        error_log("Lỗi truy vấn getColors: " . $conn->error);
+        return [];
+    }
+    while ($row = $result->fetch_assoc()) {
+        $colors[$row['id']] = $row['color'];
+    }
+    $result->free();
+    return $colors;
+}
+
+// Get distinct brands for filter dropdown
+function getBrands($conn)
+{
+    if (!$conn->ping()) {
+        error_log("Kết nối cơ sở dữ liệu đã bị đóng trong getBrands.");
+        return [];
+    }
+
+    $brands = [];
+    $sql = "SELECT DISTINCT id, name AS brand FROM brands ORDER BY name";
+    $result = $conn->query($sql);
+    if ($result === false) {
+        error_log("Lỗi truy vấn getBrands: " . $conn->error);
+        return [];
+    }
+    while ($row = $result->fetch_assoc()) {
+        $brands[$row['id']] = $row['brand'];
+    }
+    $result->free();
+    return $brands;
+}
+
+// New function to get image by color
+function getImageByColor($conn, $product_id, $color_id)
+{
+    if (!$conn->ping()) {
+        error_log("Kết nối cơ sở dữ liệu đã bị đóng trong getImageByColor.");
+        return null;
+    }
+
+    $sql = "SELECT image_url FROM product_images WHERE product_id = ? AND color_id = ? AND u_primary = 1 LIMIT 1";
+    $stmt = $conn->prepare($sql);
+    if ($stmt === false) {
+        error_log("Lỗi chuẩn bị truy vấn getImageByColor: " . $conn->error);
+        return null;
+    }
+    $stmt->bind_param("ii", $product_id, $color_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $image = $result->fetch_assoc();
+    $stmt->close();
+    return $image ? $image['image_url'] : null;
+}
+
+// Check stock availability
+$action = $_POST['action'] ?? '';
+
+if ($action === 'getStock' || $action === 'checkStock') {
+    ob_clean(); // Xóa mọi đầu ra trước đó
+    header('Content-Type: application/json');
+
+    $product_id = isset($_POST['product_id']) ? intval($_POST['product_id']) : 0;
+    $color_id = isset($_POST['color_id']) ? intval($_POST['color_id']) : 0;
+    $quantity = isset($_POST['quantity']) ? intval($_POST['quantity']) : 1;
+
+    error_log("Received POST data: " . json_encode($_POST));
+    $result = checkStockAvailability($product_id, $color_id, $quantity, $conn);
+    echo json_encode($result);
+    exit;
+}
+
+function checkStockAvailability($product_id, $color_id, $quantity, $conn)
+{
+    error_log("Checking stock: product_id=$product_id, color_id=$color_id, quantity=$quantity");
+    if (!$conn->ping()) {
+        error_log("Database connection closed in checkStockAvailability.");
+        return ['status' => 'error', 'message' => 'Lỗi kết nối cơ sở dữ liệu', 'stock' => 0];
+    }
+
+    if (!$product_id) {
+        error_log("Invalid input: product_id=$product_id");
+        return ['status' => 'error', 'message' => 'Dữ liệu đầu vào không hợp lệ', 'stock' => 0];
+    }
+
+    // Kiểm tra product_id
+    $stmt = $conn->prepare("SELECT COUNT(*) as count FROM products WHERE id = ?");
+    if ($stmt === false) {
+        error_log("Prepare failed for product check: " . $conn->error);
+        return ['status' => 'error', 'message' => 'Lỗi kiểm tra sản phẩm', 'stock' => 0];
+    }
+    $stmt->bind_param('i', $product_id);
+    $stmt->execute();
+    $product_exists = $stmt->get_result()->fetch_assoc()['count'] > 0;
+    $stmt->close();
+
+    if (!$product_exists) {
+        error_log("Product not found: product_id=$product_id");
+        return ['status' => 'error', 'message' => 'Sản phẩm không tồn tại', 'stock' => 0];
+    }
+
+    // Nếu không có color_id, lấy stock mà không cần điều kiện color_id
+    if (empty($color_id) || $color_id == 0) {
+        $stmt = $conn->prepare("SELECT stock FROM product_variants WHERE product_id = ? LIMIT 1");
+        if ($stmt === false) {
+            error_log("Prepare failed in checkStockAvailability: " . $conn->error);
+            return ['status' => 'error', 'message' => 'Lỗi chuẩn bị truy vấn stock: ' . $conn->error, 'stock' => 0];
+        }
+        $stmt->bind_param('i', $product_id);
+    } else {
+        $stmt = $conn->prepare("SELECT stock FROM product_variants WHERE product_id = ? AND color_id = ?");
+        if ($stmt === false) {
+            error_log("Prepare failed in checkStockAvailability: " . $conn->error);
+            return ['status' => 'error', 'message' => 'Lỗi chuẩn bị truy vấn stock: ' . $conn->error, 'stock' => 0];
+        }
+        $stmt->bind_param('ii', $product_id, $color_id);
+    }
+
+    if (!$stmt->execute()) {
+        error_log("Execute failed in checkStockAvailability: " . $stmt->error);
+        $stmt->close();
+        return ['status' => 'error', 'message' => 'Lỗi thực thi truy vấn stock: ' . $stmt->error, 'stock' => 0];
+    }
+
+    $result = $stmt->get_result()->fetch_assoc();
+    $stmt->close();
+
+    if (!$result) {
+        error_log("No stock data found for product_id=$product_id, color_id=$color_id");
+        return ['status' => 'error', 'message' => 'Màu không tồn tại hoặc không có stock', 'stock' => 0];
+    }
+
+    error_log("Stock check success: available stock = " . $result['stock']);
+    return ['status' => 'success', 'stock' => (int)$result['stock']];
+}
 ?>

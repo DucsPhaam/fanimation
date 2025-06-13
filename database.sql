@@ -98,7 +98,7 @@ CREATE TABLE order_items (
     quantity INT NOT NULL,
     price DECIMAL(10,2) NOT NULL,
     total_money DECIMAL(10,2) NOT NULL,
-    payment_method ENUM('online', 'cash'),
+    payment_method ENUM('online', 'cash', 'cod'),
     FOREIGN KEY (order_id) REFERENCES orders(id),
     FOREIGN KEY (product_variant_id) REFERENCES product_variants(id)
 )AUTO_INCREMENT = 1;
@@ -158,11 +158,27 @@ INSERT INTO users (name, email, password, phone, address, city, role)
 VALUES (
     'Admin User',
     'admin@example.com',
-    '$2y$10$Rwy/q8vZtOXsu5BQJGqHGOCilB60LEViQy8KReiC8LsI9jU6PK9Ia', -- Mật khẩu mã hóa cho 'admin123'
+    '$2y$10$Rwy/q8vZtOXsu5BQJGqHGOCilB60LEViQy8KReiC8LsI9jU6PK9Ia', -- Password: admin123
     '0123456789',
     '123 Admin Street',
     'Admin City',
     'admin'
+), (
+    'John Doe',
+    'john.doe@example.com',
+    '$2y$10$Z3q8z6X9Y7W5V4U3T2R1S.uK8J9H6G5F4E3D2C1B0A9Z8Y7X6W5V4', -- Password: password123
+    '0987654321',
+    '456 Elm Street',
+    'Sample City',
+    'customer'
+), (
+    'Jane Smith',
+    'jane.smith@example.com',
+    '$2y$10$A1B2C3D4E5F6G7H8I9J0K.L9M8N7O6P5Q4R3S2T1U0V9W8X7Y6Z5A', -- Password: password123
+    '0912345678',
+    '789 Oak Avenue',
+    'Test Town',
+    'customer'
 );
 
 INSERT INTO brands (name)
@@ -340,3 +356,21 @@ INSERT INTO product_images (product_id,color_id , image_url, u_primary) VALUES
 (13,2, '../assets/images/products/kwartet_1.jpg', 1),
 (13, 3,'../assets/images/products/kwartet_2.jpg', 0),
 (13, 7,'../assets/images/products/kwartet_3.jpg', 0);
+
+-- Insert sample orders
+INSERT INTO orders (user_id, status, created_at, fullname, email, phone_number, address, note, total_money, payment_status)
+VALUES
+    (1, 'completed', '2025-06-01 10:00:00', 'Admin User', 'admin@example.com', '0123456789', '123 Admin Street, Admin City', 'Please deliver before noon.', 450.00, 'completed'),
+    (1, 'pending', '2025-06-10 15:30:00', 'Admin User', 'admin@example.com', '0123456789', '123 Admin Street, Admin City', NULL, 300.50, 'pending'),
+    (2, 'processing', '2025-06-05 09:15:00', 'John Doe', 'john.doe@example.com', '0987654321', '456 Elm Street, Sample City', 'Include installation guide.', 720.75, 'pending'),
+    (3, 'shipped', '2025-05-20 14:00:00', 'Jane Smith', 'jane.smith@example.com', '0912345678', '789 Oak Avenue, Test Town', 'Urgent delivery.', 250.00, 'completed'),
+    (1, 'cancelled', '2025-05-15 11:45:00', 'Admin User', 'admin@example.com', '0123456789', '123 Admin Street, Admin City', 'Cancelled due to wrong item.', 180.25, 'pending');
+
+-- Insert into order_items
+INSERT INTO order_items (order_id, product_variant_id, quantity, price, total_money, payment_method)
+VALUES
+    (1, 1, 2, 220.00, 440.00, 'online'), -- Order 1: 2x Amped (Matte White)
+    (2, 3, 1, 300.00, 300.00, 'cash'),   -- Order 2: 1x Influencer (Matte White)
+    (3, 5, 3, 240.00, 720.00, 'online'), -- Order 3: 3x Aviara (Driftwood)
+    (4, 7, 1, 250.00, 250.00, 'cod'),    -- Order 4: 1x Islander
+    (5, 7, 1, 250.00, 250.00, 'online'); -- Order 5: 1x Islander

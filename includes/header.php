@@ -80,12 +80,14 @@ $search = isset($_GET['search']) ? htmlspecialchars($_GET['search']) : '';
                             <li><a class="dropdown-item" href="help_center.php#about-us">About Us</a></li>
                         </ul>
                     </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle fs-4" href="#" data-bs-toggle="dropdown">Products</a>
+                   <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle fs-4" href="products.php" data-bs-toggle="dropdown">Products</a>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#">Submenu item 1</a></li>
-                            <li><a class="dropdown-item" href="#">Submenu item 2</a></li>
-                            <li><a class="dropdown-item" href="#">Submenu item 3</a></li>
+                            <li><a class="dropdown-item" href="products.php?category=1">Ceiling fans</a></li>
+                            <li><a class="dropdown-item" href="products.php?category=2">Pedestal fans</a></li>
+                            <li><a class="dropdown-item" href="products.php?category=3">Wall fans</a></li>
+                            <li><a class="dropdown-item" href="products.php?category=4">Exhaust fans</a></li>
+                            <li><a class="dropdown-item" href="products.php?category=5">Accessories</a></li>
                         </ul>
                     </li>
                 </ul>

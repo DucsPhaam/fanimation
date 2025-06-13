@@ -122,7 +122,7 @@ $search = isset($_GET['search']) ? htmlspecialchars($_GET['search']) : '';
                 <?php }else{?>
                 <ul class="dropdown-menu dropdown-menu-end">
                     <li><a class="dropdown-item" href="<?php echo $logout_url; ?>">Đăng xuất</a></li>
-                    <li><a class="dropdown-item" href="<?php echo $account_url; ?>">Thông tin tài khoản</a></li>
+                    <li><a class="dropdown-item" href="<?php echo $profile_url; ?>">Thông tin tài khoản</a></li>
                 </ul>
                 <?php }?>
             </div>

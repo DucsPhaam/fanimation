@@ -1,3 +1,8 @@
+<?php
+// Get the current page URL or script name for comparison
+$current_page = basename($_SERVER['PHP_SELF']);
+?>
+
 <aside id="sidebar" class="text-white d-flex flex-column" style="background-color: rgb(133, 55, 167);">
     <div class="sidebar-header p-2 text-center">
         <a href="<?php echo $index_url; ?>" class="logo-container text-decoration-none">
@@ -7,22 +12,22 @@
         </a>
     </div>
     <nav class="nav flex-column p-3">
-        <a href="<?php echo $admin_index_url; ?>" class="nav-link text-white active">
+        <a href="<?php echo $admin_index_url; ?>" class="nav-link text-white <?php echo $current_page === 'index.php' ? 'active' : ''; ?>">
             <i class="bi bi-house-door me-2"></i> Dashboard
         </a>
-        <a href="<?php echo $base_url; ?>/pages/admin/users.php" class="nav-link text-white">
+        <a href="<?php echo $base_url; ?>/pages/admin/users.php" class="nav-link text-white <?php echo $current_page === 'users.php' ? 'active' : ''; ?>">
             <i class="bi bi-people me-2"></i> Users
         </a>
-        <a href="<?php echo $base_url; ?>/pages/admin/products.php" class="nav-link text-white">
+        <a href="<?php echo $base_url; ?>/pages/admin/products.php" class="nav-link text-white <?php echo $current_page === 'products.php' ? 'active' : ''; ?>">
             <i class="bi bi-box me-2"></i> Products
         </a>
-        <a href="<?php echo $base_url; ?>/pages/admin/orders.php" class="nav-link text-white">
+        <a href="<?php echo $base_url; ?>/pages/admin/orders.php" class="nav-link text-white <?php echo $current_page === 'orders.php' ? 'active' : ''; ?>">
             <i class="bi bi-cart me-2"></i> Orders
         </a>
-        <a href="<?php echo $base_url; ?>/pages/admin/settings.php" class="nav-link text-white">
+        <a href="<?php echo $base_url; ?>/pages/admin/settings.php" class="nav-link text-white <?php echo $current_page === 'settings.php' ? 'active' : ''; ?>">
             <i class="bi bi-gear me-2"></i> Settings
         </a>
-        <a href="<?php echo $logout_url; ?>" class="nav-link text-white">
+        <a href="<?php echo $logout_url; ?>" class="nav-link text-white <?php echo $current_page === basename(parse_url($logout_url, PHP_URL_PATH)) ? 'active' : ''; ?>">
             <i class="bi bi-box-arrow-right me-2"></i> Logout
         </a>
     </nav>
